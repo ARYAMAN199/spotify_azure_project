@@ -1,0 +1,15 @@
+{
+	"name": "df-azureprojectarya",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "90213289-d3a8-4b4b-90f4-74da8e44f906",
+		"tenantId": "7606660d-84d9-41c0-bdc8-ba15e2a4ffc6"
+	}
+}
