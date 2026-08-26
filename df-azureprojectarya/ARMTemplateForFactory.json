@@ -706,14 +706,9 @@
 						"type": "WebActivity",
 						"dependsOn": [
 							{
-								"activity": "is_failed",
+								"activity": "ForEach1",
 								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "is_passed",
-								"dependencyConditions": [
+									"Failed",
 									"Succeeded"
 								]
 							}
