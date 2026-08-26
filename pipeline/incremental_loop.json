@@ -324,12 +324,15 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "ForEach1",
+						"activity": "is_failed",
 						"dependencyConditions": [
-							"Failed",
-							"Skipped",
-							"Succeeded",
-							"Completed"
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "is_passed",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
 				],
@@ -345,9 +348,51 @@
 					"method": "POST",
 					"url": "https://prod-22.northcentralus.logic.azure.com:443/workflows/08b67db96e544a07aa87c196a39d9d98/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=mK75Yj9kWV3NHPzfEA8GthlxqJbr6S5U3tBBdfg-hvs",
 					"body": {
-						"value": "{\n\"pipeline_name\":\"@{pipeline().Pipeline}\",\n\"pipeline_runId\":\"@{pipeline().RunId}\"\n}",
+						"value": "{\n\"pipeline_name\":\"@{pipeline().Pipeline}\",\n\"pipeline_runId\":\"@{pipeline().RunId}\",\n\"pipeline_status\":\"@{variables('is_success')}\"\n}",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "is_passed",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "is_success",
+					"value": true
+				}
+			},
+			{
+				"name": "is_failed",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "is_success",
+					"value": false
 				}
 			}
 		],
@@ -391,6 +436,9 @@
 		"variables": {
 			"current": {
 				"type": "String"
+			},
+			"is_success": {
+				"type": "Boolean"
 			}
 		},
 		"annotations": []
